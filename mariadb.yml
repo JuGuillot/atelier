@@ -1,0 +1,27 @@
+tasks/main.yml :
+
+---
+- name: Installer MariaDB
+  apt:
+    name: mariadb-server
+    state: present
+    update_cache: yes
+
+- name: Démarrer MariaDB
+  service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Créer la base de données WordPress
+  mysql_db:
+    name: wordpress_db
+    state: present
+
+- name: Créer un utilisateur WordPress
+  mysql_user:
+    name: wp_user
+    password: wp_pass
+    priv: 'wordpress_db.*:ALL'
+    state: present
+    host: "%"
