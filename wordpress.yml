@@ -1,0 +1,25 @@
+tasks/main.yml :
+
+---
+- name: Installer wget et unzip
+  apt:
+    name: [wget, unzip]
+    state: present
+
+- name: Télécharger WordPress
+  get_url:
+    url: https://wordpress.org/latest.zip
+    dest: /tmp/wordpress.zip
+
+- name: Décompresser WordPress
+  unarchive:
+    src: /tmp/wordpress.zip
+    dest: /var/www/html/
+    remote_src: yes
+
+- name: Donner les bons droits
+  file:
+    path: /var/www/html/wordpress
+    owner: www-data
+    group: www-data
+    recurse: yes
