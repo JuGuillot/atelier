@@ -1,0 +1,38 @@
+tasks/main.yml :
+
+---
+- name: Installer Bind9
+  apt:
+    name: bind9
+    state: present
+    update_cache: yes
+
+- name: Ajouter une zone DNS (exemple simplifié)
+  copy:
+    dest: /etc/bind/named.conf.local
+    content: |
+      zone "monsite.test" {
+          type master;
+          file "/etc/bind/db.monsite.test";
+      };
+
+- name: Créer le fichier de zone
+  copy:
+    dest: /etc/bind/db.monsite.test
+    content: |
+      $TTL 604800
+      @ IN SOA ns.monsite.test. admin.monsite.test. (
+            2         ; Serial
+            604800    ; Refresh
+            86400     ; Retry
+            2419200   ; Expire
+            604800 )  ; Negative Cache TTL
+      ;
+      @       IN NS    ns.monsite.test.
+      ns      IN A     192.168.1.40
+      @       IN A     192.168.1.20
+
+- name: Redémarrer Bind9
+  service:
+    name: bind9
+    state: restarted
