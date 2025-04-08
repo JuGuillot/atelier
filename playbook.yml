@@ -1,0 +1,19 @@
+---
+- name: Déployer Apache + PHP + WordPress
+  hosts: web
+  become: true
+  roles:
+    - apache
+    - wordpress
+
+- name: Déployer MariaDB
+  hosts: db
+  become: true
+  roles:
+    - mariadb
+
+- name: Déployer Bind9
+  hosts: dns
+  become: true
+  roles:
+    - bind9
