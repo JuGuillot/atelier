@@ -21,7 +21,7 @@ tasks/main.yml :
     name: apache2
     state: restarted
 
-emplates/000-default.conf.j2 : 
+templates/000-default.conf.j2 : 
 
 <VirtualHost *:80>
     ServerName monsite.test
